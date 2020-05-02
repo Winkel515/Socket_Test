@@ -10,6 +10,9 @@ app.get('/', (req, res) => {
 
 io.on('connect', (socket) => {
   console.log('user connected');
+  socket.on('disconnect', () => {
+    console.log('user disconnected');
+  });
 });
 
 http.listen(port, () => {
