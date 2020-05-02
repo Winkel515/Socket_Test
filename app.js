@@ -14,7 +14,7 @@ io.on('connect', (socket) => {
     console.log('user disconnected');
   });
   socket.on('flutter_emit', (message) => {
-    print(message);
+    console.log(message);
   });
 });
 
