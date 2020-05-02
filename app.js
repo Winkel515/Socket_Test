@@ -13,6 +13,9 @@ io.on('connect', (socket) => {
   socket.on('disconnect', () => {
     console.log('user disconnected');
   });
+  socket.on('flutter_emit', (message) => {
+    print(message);
+  });
 });
 
 http.listen(port, () => {
