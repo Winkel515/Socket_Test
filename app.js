@@ -1,7 +1,20 @@
-var app = require('express')();
-var http = require('http').createServer(app);
-var io = require('socket.io')(http);
 require('dotenv').config();
+const app = require('express')();
+const http = require('http').createServer(app);
+const io = require('socket.io')(http);
+const mongoose = require('mongoose');
+
+mongoose.connect(process.env.MONGODB_URL, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+
+// TEST
+const Cat = mongoose.model('Cat', { name: String });
+
+const kitty = new Cat({ name: 'Zildjian' });
+kitty.save().then(() => console.log('meow'));
+// TEST
 
 const port = process.env.PORT || 5000;
 
