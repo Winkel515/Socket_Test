@@ -26,8 +26,8 @@ io.on('connect', (socket) => {
     console.log(title);
     const task = new Task({ title });
     await task.save();
-    console.log(task);
-    socket.emit('incoming_task');
+    console.log(JSON.stringify(task));
+    socket.emit('incoming_task', JSON.stringify(task));
   });
 });
 
