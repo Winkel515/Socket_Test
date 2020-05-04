@@ -4,17 +4,12 @@ const http = require('http').createServer(app);
 const io = require('socket.io')(http);
 const mongoose = require('mongoose');
 
+const { Task } = require('./models/tasks');
+
 mongoose.connect(process.env.MONGODB_URL, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
-
-// TEST
-const Cat = mongoose.model('Cat', { name: String });
-
-const kitty = new Cat({ name: 'Zildjian' });
-kitty.save().then(() => console.log('meow'));
-// TEST
 
 const port = process.env.PORT || 5000;
 
@@ -27,8 +22,10 @@ io.on('connect', (socket) => {
   socket.on('disconnect', () => {
     console.log('user disconnected');
   });
-  socket.on('flutter_emit', (message) => {
-    console.log(message);
+  socket.on('create_task', (title) => {
+    console.log(title);
+    const task = new Task({ title });
+    task.save();
   });
 });
 
