@@ -3,8 +3,6 @@ var http = require('http').createServer(app);
 var io = require('socket.io')(http);
 require('dotenv').config();
 
-console.log(process.env);
-
 const port = process.env.PORT || 5000;
 
 app.get('/', (req, res) => {
