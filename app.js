@@ -1,11 +1,14 @@
 var app = require('express')();
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
+require('dotenv').config();
 
-const port = 80;
+console.log(process.env);
+
+const port = process.env.PORT || 5000;
 
 app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/public/index.html');
+  res.send('Server is up!');
 });
 
 io.on('connect', (socket) => {
