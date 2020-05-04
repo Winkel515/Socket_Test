@@ -24,9 +24,13 @@ io.on('connect', (socket) => {
   });
   socket.on('create_task', async (title) => {
     console.log(title);
-    const task = new Task({ title });
-    await task.save();
-    io.emit('incoming_task', JSON.stringify(task));
+    try {
+      const task = new Task({ title });
+      await task.save();
+      io.emit('incoming_task', JSON.stringify(task));
+    } catch (e) {
+      console.log(e);
+    }
   });
 });
 
