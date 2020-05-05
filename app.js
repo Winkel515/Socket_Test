@@ -17,13 +17,16 @@ app.get('/', (req, res) => {
   res.send('Server is up!');
 });
 
-io.on('connect', (socket) => {
+io.on('connect', async (socket) => {
+  const taskList = await Task.find({});
+  console.log(taskList);
+  socket.emit('incoming_task_list');
+
   console.log('user connected');
   socket.on('disconnect', () => {
     console.log('user disconnected');
   });
   socket.on('create_task', async (title) => {
-    console.log(title);
     try {
       const task = new Task({ title });
       io.emit('incoming_task', JSON.stringify(task));
@@ -35,7 +38,6 @@ io.on('connect', (socket) => {
 
   socket.on('toggle_task', async (id) => {
     const task = await Task.findById(id);
-    console.log(task);
     task.status = !task.status;
     io.emit('incoming_toggle', JSON.stringify(task));
     await task.save();
