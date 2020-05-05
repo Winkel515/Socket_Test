@@ -19,7 +19,7 @@ app.get('/', (req, res) => {
 
 io.on('connect', async (socket) => {
   const taskList = await Task.find({});
-  console.log(taskList);
+  console.log(JSON.stringify(taskList));
   socket.emit('incoming_task_list');
 
   console.log('user connected');
