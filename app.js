@@ -29,8 +29,13 @@ io.on('connect', (socket) => {
       await task.save();
       io.emit('incoming_task', JSON.stringify(task));
     } catch (e) {
-      console.log(e);
+      console.log(e.message);
     }
+  });
+
+  socket.on('toggle_task', async (id) => {
+    const task = await Task.findById(id);
+    console.log(task);
   });
 });
 
