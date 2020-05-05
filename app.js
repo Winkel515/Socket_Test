@@ -26,8 +26,8 @@ io.on('connect', (socket) => {
     console.log(title);
     try {
       const task = new Task({ title });
-      await task.save();
       io.emit('incoming_task', JSON.stringify(task));
+      await task.save();
     } catch (e) {
       console.log(e.message);
     }
@@ -36,6 +36,9 @@ io.on('connect', (socket) => {
   socket.on('toggle_task', async (id) => {
     const task = await Task.findById(id);
     console.log(task);
+    task.status = !task.status;
+    io.emit('incoming_toggle', JSON.stringify(task));
+    await task.save();
   });
 });
 
