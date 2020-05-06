@@ -78,10 +78,7 @@ io.on('connect', async (socket) => {
       return task.save();
     });
     await Promise.all(taskPromises);
-    socket.broadcast.emit(
-      incoming_task,
-      JSON.stringify(await getOrderedTasks())
-    );
+    io.emit(incoming_task, JSON.stringify(await getOrderedTasks()));
   });
 });
 
