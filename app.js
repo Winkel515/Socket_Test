@@ -11,6 +11,8 @@ const toggle_task = 'toggle_task';
 const reorder_task = 'reorder_task';
 const delete_task = 'delete_task';
 const incoming_toggle = 'incoming_toggle';
+const edit_task = 'edit_task';
+const incoming_edited_task = 'incoming_edited_task';
 
 const { Task } = require('./models/tasks');
 
@@ -80,6 +82,14 @@ io.on('connect', async (socket) => {
     });
     await Promise.all(taskPromises);
     io.emit(incoming_task_list, JSON.stringify(await getOrderedTasks()));
+  });
+
+  socket.on(edit_task, async (taskJSON) => {
+    const task = JSON.parse(taskJSON);
+    const updatedTask = await Task.findByIdAndUpdate(task._id, {
+      title: task.title,
+    });
+    io.emit(incoming_edited_task, JSON.stringify(updatedTask));
   });
 });
 
