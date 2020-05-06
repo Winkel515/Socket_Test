@@ -49,7 +49,7 @@ io.on('connect', async (socket) => {
   });
 
   socket.on('reorder_task', async (jsonTasks) => {
-    socket.broadcast.emit('incoming_task_list', jsonTasks);
+    io.emit('incoming_task_list', jsonTasks);
     const tasksList = JSON.parse(jsonTasks);
     tasksList.forEach(async (task, index) => {
       const foundTask = await Task.findById(task.id);
