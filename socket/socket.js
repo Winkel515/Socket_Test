@@ -1,3 +1,5 @@
+const { Task } = require('./models/tasks');
+
 const incoming_task = 'incoming_task';
 const create_task = 'create_task';
 const toggle_task = 'toggle_task';
