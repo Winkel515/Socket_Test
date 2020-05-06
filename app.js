@@ -20,6 +20,7 @@ app.get('/', (req, res) => {
 
 io.on('connect', async (socket) => {
   const taskList = await Task.find({});
+  taskList.sort((a, b) => (a.index > b.index ? 1 : -1));
   socket.emit('incoming_task_list', JSON.stringify(taskList));
 
   console.log('user connected');
