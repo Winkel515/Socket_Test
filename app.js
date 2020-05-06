@@ -46,6 +46,16 @@ io.on('connect', async (socket) => {
     io.emit('incoming_toggle', JSON.stringify(task));
     await task.save();
   });
+
+  socket.on('reorder_task', async (jsonTasks) => {
+    io.emit('incoming_task_list', jsonTasks);
+    const tasksList = JSON.parse(jsonTasks);
+    tasksList.forEach(async (task, index) => {
+      const foundTask = await Task.findById(task.id);
+      foundTask.index = index;
+      foundTask.save();
+    });
+  });
 });
 
 http.listen(port, () => {
