@@ -64,7 +64,7 @@ io.on('connect', async (socket) => {
     socket.broadcast.emit('incoming_task_list', jsonTasks);
     const tasksList = JSON.parse(jsonTasks);
     tasksList.forEach(async (task, index) => {
-      const foundTask = await Task.findById(task.id);
+      const foundTask = await Task.findById(task._id);
       foundTask.index = index;
       foundTask.save();
     });
