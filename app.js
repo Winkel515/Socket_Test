@@ -4,6 +4,7 @@ const http = require('http').createServer(app);
 const io = require('socket.io')(http);
 const mongoose = require('mongoose');
 
+const incoming_task_list = 'incoming_task_list';
 const incoming_task = 'incoming_task';
 const create_task = 'create_task';
 const toggle_task = 'toggle_task';
@@ -33,7 +34,7 @@ app.get('/', (req, res) => {
 
 io.on('connect', async (socket) => {
   const taskList = await getOrderedTasks();
-  socket.emit('incoming_task_list', JSON.stringify(taskList));
+  socket.emit(incoming_task_list, JSON.stringify(taskList));
 
   console.log('user connected');
   socket.on('disconnect', () => {
@@ -61,7 +62,7 @@ io.on('connect', async (socket) => {
   });
 
   socket.on(reorder_task, async (jsonTasks) => {
-    socket.broadcast.emit('incoming_task_list', jsonTasks);
+    socket.broadcast.emit(incoming_task_list, jsonTasks);
     const tasksList = JSON.parse(jsonTasks);
     tasksList.forEach(async (task, index) => {
       const foundTask = await Task.findById(task._id);
