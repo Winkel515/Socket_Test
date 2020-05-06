@@ -87,9 +87,13 @@ io.on('connect', async (socket) => {
 
   socket.on(edit_task, async (taskJSON) => {
     const task = JSON.parse(taskJSON);
-    const updatedTask = await Task.findByIdAndUpdate(task._id, {
-      title: task.title,
-    });
+    const updatedTask = await Task.findByIdAndUpdate(
+      task._id,
+      {
+        title: task.title,
+      },
+      { new: true }
+    );
     io.emit(incoming_edited_task, JSON.stringify(updatedTask));
   });
 });
