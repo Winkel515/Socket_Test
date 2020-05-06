@@ -1,4 +1,4 @@
-const { Task } = require('./models/tasks');
+const { Task } = require('../models/tasks');
 
 const incoming_task = 'incoming_task';
 const create_task = 'create_task';
