@@ -25,9 +25,13 @@ io.on('connect', async (socket) => {
   socket.on('disconnect', () => {
     console.log('user disconnected');
   });
-  socket.on('create_task', async (title) => {
+  socket.on('create_task', async (newTaskJSON) => {
     try {
-      const task = new Task({ title });
+      var parsedTask = JSON.parse(newTaskJSON);
+      const task = new Task({
+        title: parsedTask.title,
+        index: parsedTask.index,
+      });
       io.emit('incoming_task', JSON.stringify(task));
       await task.save();
     } catch (e) {

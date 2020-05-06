@@ -9,6 +9,11 @@ const TaskSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  index: {
+    type: Number,
+    required: true,
+    unique: true,
+  },
 });
 
 const Task = mongoose.model('Task', TaskSchema);
