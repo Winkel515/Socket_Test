@@ -9,6 +9,7 @@ const create_task = 'create_task';
 const toggle_task = 'toggle_task';
 const reorder_task = 'reorder_task';
 const delete_task = 'delete_task';
+const incoming_toggle = 'incoming_toggle';
 
 const { Task } = require('./models/tasks');
 
