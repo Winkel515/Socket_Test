@@ -9,6 +9,7 @@ const { Task } = require('./models/tasks');
 mongoose.connect(process.env.MONGODB_URL, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
+  useCreateIndex: true,
 });
 
 const port = process.env.PORT || 5000;
