@@ -10,9 +10,10 @@ const create_task = 'create_task';
 const toggle_task = 'toggle_task';
 const reorder_task = 'reorder_task';
 const delete_task = 'delete_task';
-const incoming_toggle = 'incoming_toggle';
 const edit_task = 'edit_task';
-const incoming_edited_task = 'incoming_edited_task';
+const incoming_change = 'incoming_change';
+const clear_all_tasks = 'clear_all_tasks';
+const incoming_clear_all_tasks = 'incoming_clear_all_tasks';
 
 const { Task } = require('./models/tasks');
 
@@ -60,7 +61,7 @@ io.on('connect', async (socket) => {
   socket.on(toggle_task, async (id) => {
     const task = await Task.findById(id);
     task.status = !task.status;
-    io.emit(incoming_toggle, JSON.stringify(task));
+    io.emit(incoming_change, JSON.stringify(task));
     await task.save();
   });
 
@@ -82,7 +83,15 @@ io.on('connect', async (socket) => {
       return task.save();
     });
     await Promise.all(taskPromises);
-    io.emit(incoming_task_list, JSON.stringify(await getOrderedTasks()));
+    socket.broadcast.emit(
+      incoming_task_list,
+      JSON.stringify(await getOrderedTasks())
+    );
+  });
+
+  socket.on(clear_all_tasks, async () => {
+    Task.deleteMany({});
+    socket.broadcast.emit(incoming_clear_all_tasks);
   });
 
   socket.on(edit_task, async (taskJSON) => {
@@ -94,7 +103,7 @@ io.on('connect', async (socket) => {
       },
       { new: true }
     );
-    io.emit(incoming_edited_task, JSON.stringify(updatedTask));
+    io.emit(incoming_change, JSON.stringify(updatedTask));
   });
 });
 
