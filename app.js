@@ -90,8 +90,9 @@ io.on('connect', async (socket) => {
   });
 
   socket.on(clear_all_tasks, async () => {
-    Task.deleteMany({});
     socket.broadcast.emit(incoming_clear_all_tasks);
+    const taskList = await Task.find({});
+    taskList.forEach((task) => task.remove());
   });
 
   socket.on(edit_task, async (taskJSON) => {
